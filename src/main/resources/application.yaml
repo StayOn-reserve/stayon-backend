@@ -29,3 +29,7 @@ logging:
   level:
     com.stayon: INFO
     org.hibernate.SQL: DEBUG
+
+business-api:
+  url : ${BUSINESS_API_URL}
+  api-key : ${BUSINESS_API_KEY}
