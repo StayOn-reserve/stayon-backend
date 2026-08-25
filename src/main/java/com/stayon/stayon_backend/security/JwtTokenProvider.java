@@ -1,6 +1,7 @@
 package com.stayon.stayon_backend.security;
 
 import com.stayon.stayon_backend.config.JwtProperties;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -56,5 +57,39 @@ public class JwtTokenProvider {
                 .expiration(expiration)
                 .signWith(getSigningKey())
                 .compact();
+    }
+    public boolean validateToken(String token) {
+
+        try {
+            Jwts.parser()
+                    .verifyWith(getSigningKey())
+                    .build()
+                    .parseSignedClaims(token);
+
+            return true;
+
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+    public Long getUserId(String token) {
+
+        return Long.valueOf(
+                Jwts.parser()
+                        .verifyWith(getSigningKey())
+                        .build()
+                        .parseSignedClaims(token)
+                        .getPayload()
+                        .getSubject()
+        );
+    }
+    public String getRole(String token) {
+
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("role", String.class);
     }
 }
