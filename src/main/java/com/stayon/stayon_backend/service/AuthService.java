@@ -102,4 +102,7 @@ public class AuthService {
 
         return new TokenRefreshResponseDto(accessToken);
     }
+    public void logout(Long userId) {
+        refreshTokenRepository.delete(userId);
+    }
 }
