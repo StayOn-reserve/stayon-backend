@@ -23,6 +23,15 @@ public class BusinessVerifyResponseDto {
         public boolean isVerified(){
             return valid.equals("01");
         }
+        @Override
+        public String toString(){
+            return "BusinessData{" +
+                    "b_no='" + b_no + '\'' +
+                    ", valid='" + valid + '\'' +
+                    ", valid_msg='" + valid_msg + '\'' +
+                    ", request_param=" + request_param +
+                    '}';
+        }
     }
 
     @Getter
@@ -34,5 +43,13 @@ public class BusinessVerifyResponseDto {
     }
     public boolean isVerified(){
         return data != null && !data.isEmpty() && data.getFirst().isVerified();
+    }
+    @Override
+    public String toString(){
+        return "BusinessVerifyResponseDto{" +
+                "request_cnt=" + request_cnt +
+                ", status_code='" + status_code + '\'' +
+                ", data=" + data.getFirst().toString() +
+                '}';
     }
 }

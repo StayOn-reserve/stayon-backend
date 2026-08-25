@@ -11,6 +11,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long userId;
 
     @Getter
@@ -20,7 +21,7 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(unique = true)
     private String businessNumber;
 
     @Column(nullable = false)
@@ -30,7 +31,7 @@ public class User {
     private Role role;
 
     @Builder
-    private User(
+    public User(
             String email,
             String password,
             String name,
