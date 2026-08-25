@@ -7,10 +7,9 @@ import lombok.Setter;
 @Setter
 public class SignupRequestDto {
 
-    private String loginId;
+    private String email;
     private String password;
     private String name;
-    private String email;
     private String role;
     private String businessNumber;
 }

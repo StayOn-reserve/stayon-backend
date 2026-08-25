@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @NoArgsConstructor
@@ -19,6 +20,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
+    @Getter
     private String name;
 
     @Column(unique = true)
@@ -28,6 +30,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Getter
     private Role role;
 
     @Builder
@@ -43,5 +46,11 @@ public class User {
         this.name = name;
         this.businessNumber = businessNumber;
         this.role = role;
+    }
+    public boolean checkPassword(
+            String rawPassword,
+            PasswordEncoder passwordEncoder
+    ) {
+        return passwordEncoder.matches(rawPassword, password);
     }
 }
