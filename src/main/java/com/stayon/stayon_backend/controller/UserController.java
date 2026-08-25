@@ -1,13 +1,12 @@
 package com.stayon.stayon_backend.controller;
 
-import com.stayon.stayon_backend.dto.user.EmailCheckRequestDto;
-import com.stayon.stayon_backend.dto.user.EmailCheckResponseDto;
-import com.stayon.stayon_backend.dto.user.SignupRequestDto;
-import com.stayon.stayon_backend.dto.user.SignupResponseDto;
+import com.stayon.stayon_backend.dto.user.*;
 import com.stayon.stayon_backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -26,5 +25,10 @@ public class UserController {
     public ResponseEntity<SignupResponseDto> signup(@RequestBody SignupRequestDto dto){
         SignupResponseDto response = userService.signup(dto);
         return ResponseEntity.ok(response);
+    }
+    @GetMapping("/me")
+    public ResponseEntity<GetMeResponseDto> getMe(Authentication authentication){
+        Long userId = (Long) authentication.getPrincipal();
+        return ResponseEntity.ok(userService.getMe(userId));
     }
 }
