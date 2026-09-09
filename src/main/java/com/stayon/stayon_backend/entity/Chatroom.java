@@ -32,7 +32,7 @@ public class Chatroom {
      * 하나의 ChatRoom에는 여러 개의 Chat이 존재
      */
     @OneToMany(
-            mappedBy = "chatRoom",
+            mappedBy = "chatroom",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
