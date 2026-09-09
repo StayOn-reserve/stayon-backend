@@ -38,11 +38,14 @@ public class UserService {
         return new EmailCheckResponseDto(exists);
     }
     public GetMeResponseDto getMe(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = getCurrentUser(userId);
         return GetMeResponseDto.builder()
                 .userId(user.getUserId())
                 .email(user.getEmail())
                 .name(user.getName())
                 .build();
+    }
+    public User getCurrentUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow();
     }
 }
