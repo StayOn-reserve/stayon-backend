@@ -8,12 +8,21 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientConfig {
     @Value("${business-api.url}")
-    private String baseUrl;
+    private String businessApibaseUrl;
+    @Value("${trip-eleven.base-url}")
+    private String tripElevenBaseUrl;
     @Bean
-    public RestClient restClient() {
+    public RestClient businessRestClient() {
 
         return RestClient.builder()
-                .baseUrl(baseUrl)
+                .baseUrl(businessApibaseUrl)
+                .build();
+    }
+    @Bean
+    public RestClient tripElevenRestClient() {
+
+        return RestClient.builder()
+                .baseUrl(tripElevenBaseUrl)
                 .build();
     }
 }
