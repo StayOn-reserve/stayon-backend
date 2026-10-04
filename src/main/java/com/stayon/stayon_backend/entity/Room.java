@@ -10,8 +10,8 @@ public class Room {
     private Long roomId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "accommodation_id", nullable = false)
-    private Accommodation accommodation;
+    @JoinColumn(name = "accommodation_item_id", nullable = false)
+    private AccommodationItem accommodationItem;
 
     @Column(nullable = false)
     private String roomName;
