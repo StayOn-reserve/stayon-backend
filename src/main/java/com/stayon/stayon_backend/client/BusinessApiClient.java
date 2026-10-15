@@ -2,7 +2,6 @@ package com.stayon.stayon_backend.client;
 
 import com.stayon.stayon_backend.dto.business.BusinessVerifyRequestDto;
 import com.stayon.stayon_backend.dto.business.BusinessVerifyResponseDto;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
