@@ -36,9 +36,71 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testRuntimeOnly 'com.h2database:h2'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// Keep production runtime resolution free of development-only artifacts, including Boot JAR metadata.
+// Resolve DevTools only for bootRun; its declaration/version and local development behavior are retained.
+configurations.runtimeClasspath {
+	setExtendsFrom(extendsFrom.findAll { !(it.name in ['developmentOnly', 'testAndDevelopmentOnly']) })
+}
+tasks.named('bootJar') {
+	classpath = sourceSets.main.runtimeClasspath
+}
+tasks.named('bootRun') {
+	classpath += configurations.developmentOnly + configurations.testAndDevelopmentOnly
+}
+
+// Manual developer tool only. Neither bootJar nor the ordinary test task includes this source set.
+sourceSets {
+	sandbox {
+		java.srcDir 'src/sandbox/java'
+		compileClasspath += sourceSets.test.runtimeClasspath
+		runtimeClasspath += output + compileClasspath
+	}
+}
+tasks.register('prepareKakaoSandbox') {
+	group = 'verification'
+	description = 'Compiles the disabled-by-default standalone sandbox tool; performs no external calls.'
+	dependsOn testClasses, sandboxClasses
+	doLast {
+		def file = layout.buildDirectory.file('kakaopay-sandbox-classpath.txt').get().asFile
+		file.text = sourceSets.sandbox.runtimeClasspath.asPath
+	}
+}
+tasks.register('kakaoSandboxLocal', JavaExec) {
+	group = 'verification'
+	description = 'Runs the standalone sandbox journey against a loopback Mock HTTP server only.'
+	dependsOn sandboxClasses, testClasses
+	classpath = sourceSets.sandbox.runtimeClasspath
+	mainClass = 'com.stayon.stayon_backend.service.KakaoPaySandboxProbe'
+	args '--local-smoke'
+}
+
+tasks.register('jarVerificationSupport', Jar) {
+	archiveClassifier = 'verification-support'
+	destinationDirectory = layout.buildDirectory.dir('jar-verification-support')
+	dependsOn sandboxClasses
+	from(sourceSets.sandbox.output) { include '**/JarSmokeInitializer*.class' }
+	from(layout.buildDirectory.dir('jar-verification-resources'))
+	doFirst {
+		def factories = layout.buildDirectory.file('jar-verification-resources/META-INF/spring.factories').get().asFile
+		factories.parentFile.mkdirs()
+		factories.text = 'org.springframework.context.ApplicationContextInitializer=com.stayon.stayon_backend.service.JarSmokeInitializer\n'
+	}
+}
+tasks.register('verifyExecutableJar', JavaExec) {
+	group = 'verification'
+	description = 'Checks the actual Boot JAR with fresh owned MySQL; never invokes PG APIs.'
+	dependsOn bootJar, jarVerificationSupport, sandboxClasses
+	classpath = sourceSets.sandbox.runtimeClasspath
+	mainClass = 'com.stayon.stayon_backend.service.ExecutableJarVerifier'
+	doFirst {
+		args = [tasks.bootJar.archiveFile.get().asFile.absolutePath, tasks.jarVerificationSupport.archiveFile.get().asFile.absolutePath]
+	}
 }

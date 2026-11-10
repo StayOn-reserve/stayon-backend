@@ -1,0 +1,24 @@
+# Tests never load the production application.yaml or external credentials.
+spring:
+  datasource:
+    url: jdbc:h2:mem:stayon-tests;DB_CLOSE_DELAY=-1;NON_KEYWORDS=USER
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+  data:
+    redis:
+      repositories:
+        enabled: false
+      host: 127.0.0.1
+      port: 1
+business-api:
+  url: http://127.0.0.1:1
+  api-key: test-only
+jwt:
+  secret: test-only-signing-key-at-least-32-bytes-long
+  access-token-expiration: 60000
+  refresh-token-expiration: 60000
