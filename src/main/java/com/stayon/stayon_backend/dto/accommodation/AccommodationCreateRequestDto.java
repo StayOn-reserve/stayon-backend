@@ -1,7 +1,6 @@
 package com.stayon.stayon_backend.dto.accommodation;
 
-import com.stayon.stayon_backend.entity.Accommodation;
-import com.stayon.stayon_backend.entity.ReservationProvider;
+import com.stayon.stayon_backend.entity.Platform;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,5 +10,5 @@ public class AccommodationCreateRequestDto {
 
     private String accommodationName;
 
-    private ReservationProvider reservationProvider;
+    private Platform platform;
 }

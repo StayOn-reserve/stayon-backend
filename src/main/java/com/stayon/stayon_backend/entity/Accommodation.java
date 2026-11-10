@@ -27,7 +27,7 @@ public class Accommodation {
     @Setter
     @Enumerated(EnumType.STRING)
     @Column(name = "reservation_provider", nullable = false)
-    private ReservationProvider reservationProvider;
+    private Platform platform;
 
     @OneToMany(mappedBy = "accommodation")
     private List<AccommodationItem> accommodationItems = new ArrayList<>();
@@ -46,17 +46,17 @@ public class Accommodation {
         return AccommodationResponseDto.builder()
                 .accommodationId(this.getAccommodationId())
                 .accommodationName(this.getName())
-                .reservationProvider(this.getReservationProvider())
+                .platform(this.getPlatform())
                 .build();
     }
     @Builder
     public Accommodation(
             String name,
-            ReservationProvider reservationProvider,
+            Platform platform,
             User owner
     ) {
         this.name = name;
-        this.reservationProvider = reservationProvider;
+        this.platform = platform;
         this.owner = owner;
     }
     public void changeAccommodationActive(){

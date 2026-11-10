@@ -19,7 +19,7 @@ public class AccommodationService {
         User user = userService.getCurrentUser(userId);
         Accommodation accommodation = Accommodation.builder()
                 .name(dto.getAccommodationName())
-                .reservationProvider(dto.getReservationProvider())
+                .platform(dto.getPlatform())
                 .owner(user)
                 .build();
         Accommodation savedAccomm = accommodationRepository.save(accommodation);

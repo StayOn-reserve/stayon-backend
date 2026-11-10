@@ -18,15 +18,15 @@ public class Chatroom {
     private Long chatroomId;
 
     /**
-     * 하나의 Room은 하나의 ChatRoom만 가질 수 있음
+     * 하나의 Site는 하나의 Chatroom만 가질 수 있음
      */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-            name = "room_id",
+            name = "site_id",
             nullable = false,
             unique = true
     )
-    private Room room;
+    private Site site;
 
     /**
      * 하나의 ChatRoom에는 여러 개의 Chat이 존재

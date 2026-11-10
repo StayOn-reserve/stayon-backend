@@ -66,7 +66,7 @@ public class AuthService {
         String refreshToken = dto.getRefreshToken();
 
         // Refresh Token 자체의 서명 및 만료시간 검증
-        if (!jwtTokenProvider.validateToken(refreshToken)) {
+        if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
             throw new IllegalArgumentException("유효하지 않은 Refresh Token입니다.");
         }
 

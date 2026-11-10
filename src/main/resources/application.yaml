@@ -10,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     open-in-view: false
     properties:
       hibernate:
@@ -38,3 +38,10 @@ jwt:
   secret: ${JWT_SECRET}
   access-token-expiration: 3600000
   refresh-token-expiration: 1209600000
+customer:
+  jwt:
+    secret: ${CUSTOMER_JWT_SECRET}
+    issuer: ${CUSTOMER_JWT_ISSUER}
+    audience: ${CUSTOMER_JWT_AUDIENCE}
+  otp:
+    hmac-secret: ${CUSTOMER_OTP_HMAC_SECRET}

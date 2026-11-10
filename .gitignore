@@ -6,6 +6,9 @@ build/
 !**/src/test/**/build/
 *.class
 .env
+.gradle-user-home/
+.gradle-codex-home/
+.gradle-verification/
 application-secret.yaml
 
 ### STS ###

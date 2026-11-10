@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
 
             // JWT 검증
-            if (jwtTokenProvider.validateToken(accessToken)) {
+            if (jwtTokenProvider.validateAccessToken(accessToken)) {
 
                 Long userId =
                         jwtTokenProvider.getUserId(accessToken);
@@ -64,10 +63,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder
                         .getContext()
                         .setAuthentication(authentication);
+            } else {
+                SecurityContextHolder.clearContext();
+                response.sendError(401);
+                return;
             }
 
         } catch (Exception e) {
             SecurityContextHolder.clearContext();
+            response.sendError(401);
+            return;
         }
 
         filterChain.doFilter(request, response);

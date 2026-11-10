@@ -1,6 +1,6 @@
 package com.stayon.stayon_backend.dto.accommodation;
 
-import com.stayon.stayon_backend.entity.ReservationProvider;
+import com.stayon.stayon_backend.entity.Platform;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,18 +11,18 @@ public class AccommodationResponseDto {
 
     private Long accommodationId;
     private String accommodationName;
-    private ReservationProvider reservationProvider;
+    private Platform platform;
     private Boolean isActive;
     @Builder
     public AccommodationResponseDto(
             Long accommodationId,
             String accommodationName,
-            ReservationProvider reservationProvider,
+            Platform platform,
             Boolean isActive
     ) {
         this.accommodationId = accommodationId;
         this.accommodationName = accommodationName;
-        this.reservationProvider = reservationProvider;
+        this.platform = platform;
         this.isActive = isActive;
     }
 }
